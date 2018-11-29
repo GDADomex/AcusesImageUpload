@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AcusesImageUpload.Models;
 
 namespace AcusesImageUpload.Controllers
 {
@@ -13,18 +14,35 @@ namespace AcusesImageUpload.Controllers
             return View();
         }
 
-        public ActionResult About()
+        //public ActionResult About()
+        //{
+        //    ViewBag.Message = "Your application description page.";
+
+        //    return View();
+        //}
+
+        //public ActionResult Contact()
+        //{
+        //    ViewBag.Message = "Your contact page.";
+
+        //    return View();
+        //}
+
+        public ActionResult Create(cImageUpload img, HttpPostedFileBase file)
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            if (ModelState.IsValid)
+            {
+                if (file != null)
+                {
+                    file.SaveAs(HttpContext.Server.MapPath("~/Images/")
+                                                          + file.FileName);
+                    //img.ImagePath = file.FileName;
+                }
+                //db.Image.Add(img);
+                //db.SaveChanges();
+                return RedirectToAction("Create","img");
+            }
+            return View(img);
         }
     }
 }
